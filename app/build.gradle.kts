@@ -60,9 +60,10 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
-    // 
+    // Stripe server SDK/Lib
     implementation(libs.stripe.java)
 
+    // Stripe android SDK/Lib
     implementation(libs.stripe.android)
 
     testImplementation(libs.junit)

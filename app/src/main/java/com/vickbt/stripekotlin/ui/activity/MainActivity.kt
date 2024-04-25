@@ -51,32 +51,38 @@ fun MainScreen(modifier: Modifier = Modifier) {
     var customerConfig by remember { mutableStateOf<PaymentSheet.CustomerConfiguration?>(null) }
     var paymentIntentClientSecret by remember { mutableStateOf<String?>(null) }
 
-    val server = Server.createServer()
+    // Get server configs
+    val serverConfig = Server.serverConfig()
 
     LaunchedEffect(context) {
-        paymentIntentClientSecret = server["paymentIntent"]
+        paymentIntentClientSecret = serverConfig["paymentIntent"]
         customerConfig = PaymentSheet.CustomerConfiguration(
-            server["customer"] ?: "",
-            server["ephemeralKey"] ?: ""
+            serverConfig["customer"] ?: "",
+            serverConfig["ephemeralKey"] ?: ""
         )
-        val publishableKey = server["publishableKey"]
+
+        val publishableKey = serverConfig["publishableKey"]
         PaymentConfiguration.init(context, publishableKey ?: "")
     }
 
     Box(modifier = modifier.fillMaxSize()) {
-        Button(modifier = Modifier.align(Alignment.Center), onClick = {
-            val currentConfig = customerConfig
-            val currentClientSecret = paymentIntentClientSecret
+        Button(
+            modifier = Modifier.align(Alignment.Center),
+            onClick = {
+                val currentConfig = customerConfig
+                val currentClientSecret = paymentIntentClientSecret
 
-            if (currentConfig != null && currentClientSecret != null) {
-                presentPaymentSheet(paymentSheet, currentConfig, currentClientSecret)
-            }
-        }) {
+                if (currentConfig != null && currentClientSecret != null) {
+                    presentPaymentSheet(paymentSheet, currentConfig, currentClientSecret)
+                }
+            }) {
             Text("PAY")
         }
     }
 }
 
+// This is from the Stripe documentation
+/**This displays the Stripe bottom sheet on button click*/
 private fun presentPaymentSheet(
     paymentSheet: PaymentSheet,
     customerConfig: PaymentSheet.CustomerConfiguration,
@@ -87,24 +93,25 @@ private fun presentPaymentSheet(
         PaymentSheet.Configuration(
             merchantDisplayName = "My merchant name",
             customer = customerConfig,
-            // Set `allowsDelayedPaymentMethods` to true if your business handles
-            // delayed notification payment methods like US bank accounts.
             allowsDelayedPaymentMethods = true
         )
     )
 }
 
+// This is from the Stripe documentation
+/**Fetch the result from payment operation as cancelled, failed and completed*/
 private fun onPaymentSheetResult(paymentSheetResult: PaymentSheetResult) {
-    when(paymentSheetResult) {
+    when (paymentSheetResult) {
         is PaymentSheetResult.Canceled -> {
-            print("Canceled")
+            Log.e("Stripe Log", "Cancelled")
         }
+
         is PaymentSheetResult.Failed -> {
-            print("Error: ${paymentSheetResult.error}")
+            Log.e("Stripe Log", "Failed")
         }
+
         is PaymentSheetResult.Completed -> {
-            // Display for example, an order confirmation screen
-            print("Completed")
+            Log.e("Stripe Log", "Completed")
         }
     }
 }
