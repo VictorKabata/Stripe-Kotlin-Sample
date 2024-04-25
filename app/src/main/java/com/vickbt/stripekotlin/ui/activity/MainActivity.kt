@@ -24,7 +24,7 @@ import com.stripe.android.PaymentConfiguration
 import com.stripe.android.paymentsheet.PaymentSheet
 import com.stripe.android.paymentsheet.PaymentSheetResult
 import com.stripe.android.paymentsheet.rememberPaymentSheet
-import com.vickbt.stripekotlin.server.Server
+import com.vickbt.stripekotlin.server.ServerConfigs
 import com.vickbt.stripekotlin.ui.theme.StripeKotlinTheme
 
 class MainActivity : ComponentActivity() {
@@ -52,7 +52,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
     var paymentIntentClientSecret by remember { mutableStateOf<String?>(null) }
 
     // Get server configs
-    val serverConfig = Server.serverConfig()
+    val serverConfig = ServerConfigs.serverConfig()
 
     LaunchedEffect(context) {
         paymentIntentClientSecret = serverConfig["paymentIntent"]

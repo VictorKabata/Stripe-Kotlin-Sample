@@ -10,7 +10,7 @@ import com.stripe.param.PaymentIntentCreateParams
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 
-object Server {
+object ServerConfigs {
 
     /**Set up server configs that returns stripe payment info
      *
