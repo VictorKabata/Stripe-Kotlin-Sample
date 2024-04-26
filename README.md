@@ -20,8 +20,7 @@ object ServerConfigs {
     fun serverConfig(): Map<String, String> = runBlocking(Dispatchers.IO) {
 
         // Pass your api key from: https://dashboard.stripe.com/apikeys
-        Stripe.apiKey =
-            "sk_test_51P9RJAEWsxWYTkMNTzm7C0lwcqdamjwbPhoU7tDENNv0ovHEVlHE1iW4wRGcbvY44peEygoPTGue6y5AwVaqr3J20085Nrr6LP"
+        Stripe.apiKey = "your API key"
 
         // Create customer object
         val customerParams = CustomerCreateParams.builder().build()
@@ -47,7 +46,7 @@ object ServerConfigs {
             "paymentIntent" to paymentIntent.clientSecret,
             "ephemeralKey" to ephemeralKey.secret,
             "customer" to customer.id,
-            "publishableKey" to "pk_test_51P9RJAEWsxWYTkMNGGS6ne0uW9NAAST6oynLPv61RPA3qpohYYaPkY8gLDehMTIDVAVQzGk4rG3FlWutbjNePIiX005OZlY4en" // You can get his value from stripe tutorial
+            "publishableKey" to "your publish key" // You can get his value from stripe tutorial
         )
 
         stripePaymentInfo
